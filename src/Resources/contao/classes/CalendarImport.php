@@ -223,11 +223,22 @@ class CalendarImport extends \Backend
             array('teaser', $GLOBALS['TL_LANG']['tl_calendar_events']['teaser'][0])
         );
 
-        if (in_array('cep_location', $fieldnames)) {
-            array_push($calfields,
-                array('cep_location', $GLOBALS['TL_LANG']['tl_calendar_events']['cep_location'][0]),
-                array('cep_participants', $GLOBALS['TL_LANG']['tl_calendar_events']['cep_participants'][0]),
-                array('cep_contact', $GLOBALS['TL_LANG']['tl_calendar_events']['cep_contact'][0])
+        if (in_array('location', $fieldnames)) {
+            array_push(
+                $calfields,
+                array('location', $GLOBALS['TL_LANG']['tl_calendar_events']['location'][0])
+            );
+        }
+        if (in_array('cep_participants', $fieldnames)) {
+            array_push(
+                $calfields,
+                array('cep_participants', $GLOBALS['TL_LANG']['tl_calendar_events']['cep_participants'][0])
+            );
+        }
+        if (in_array('location_contact', $fieldnames)) {
+            array_push(
+                $calfields,
+                array('location_contact', $GLOBALS['TL_LANG']['tl_calendar_events']['location_contact'][0])
             );
         }
 
@@ -820,9 +831,9 @@ class CalendarImport extends \Backend
                 }
 
                 // calendar_events_plus fields
-                if (array_key_exists('cep_location', $arrFields)) {
+                if (array_key_exists('location', $arrFields)) {
                     if (strlen($location)) {
-                        $arrFields['cep_location'] =
+                        $arrFields['location'] =
                             preg_replace("/(\\\\r)|(\\\\n)/ims", "\n", $location);
                     }
                 } else {
@@ -848,8 +859,8 @@ class CalendarImport extends \Backend
                     }
                 }
 
-                if (array_key_exists('cep_contact', $arrFields)) {
-                    $contact = $vevent->contact;
+                if (array_key_exists('location_contact', $arrFields)) {
+                    $contact = $vevent->getContact();
                     if (is_array($contact)) {
                         $contacts = array();
                         foreach ($contact as $data) {
@@ -858,7 +869,7 @@ class CalendarImport extends \Backend
                             }
                         }
                         if (count($contacts)) {
-                            $arrFields['cep_contact'] = join($contacts, ',');
+                            $arrFields['location_contact'] = join($contacts, ',');
                         }
                     }
                 }
