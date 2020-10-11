@@ -978,7 +978,7 @@ class CalendarImport extends \Backend
                 ->limit(1)
                 ->execute($id);
             $autoAlias = true;
-            $varValue = standardize($objTitle->title);
+            $varValue = StringUtil::standardize($objTitle->title);
         }
 
         $objAlias = $this->Database->prepare("SELECT id FROM tl_calendar_events WHERE alias=?")
